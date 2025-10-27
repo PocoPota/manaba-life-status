@@ -1,0 +1,11 @@
+{
+  "name": "manaba-life-status",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "logger": "node logger.js"
+  }
+}
