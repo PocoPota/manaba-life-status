@@ -6,6 +6,6 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "logger": "node logger.js"
+    "logger": "node scripts/logger.js"
   }
 }
