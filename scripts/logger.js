@@ -70,9 +70,11 @@ export const heatmapLogger = async (ts) => {
  * @param {string} host - ホスト名（例: "manaba.tsukuba.ac.jp"）
  */
 export const runAllLoggers = async (ts, host) => {
-  await statusLogger(ts, host);
-  await logLogger(ts, host);
-  await heatmapLogger(ts);
+  await Promise.all([
+    statusLogger(ts, host),
+    logLogger(ts, host),
+    heatmapLogger(ts)
+  ]);
 };
 
 // GitHub Actionsから実行された場合のエントリーポイント
