@@ -63,3 +63,40 @@ export const heatmapLogger = async (ts) => {
 
   await writeJsonFile(heatmapPath, heatmapData);
 };
+
+/**
+ * すべてのロガーを実行するメイン関数
+ * @param {number} ts - Unixタイムスタンプ（ミリ秒）
+ * @param {string} host - ホスト名（例: "manaba.tsukuba.ac.jp"）
+ */
+export const runAllLoggers = async (ts, host) => {
+  await statusLogger(ts, host);
+  await logLogger(ts, host);
+  await heatmapLogger(ts);
+};
+
+// GitHub Actionsから実行された場合のエントリーポイント
+if (import.meta.url === `file://${process.argv[1]}`) {
+  const timestamp = process.env.TIMESTAMP;
+  const host = process.env.HOST;
+
+  if (!timestamp || !host) {
+    console.error('エラー: TIMESTAMP と HOST 環境変数が必要です');
+    console.error('使用方法: TIMESTAMP=<ms> HOST=<host> node scripts/logger.js');
+    process.exit(1);
+  }
+
+  const ts = parseInt(timestamp, 10);
+  if (isNaN(ts)) {
+    console.error('エラー: TIMESTAMP は数値である必要があります');
+    process.exit(1);
+  }
+
+  try {
+    await runAllLoggers(ts, host);
+    console.log(`ログを記録しました: ${new Date(ts).toISOString()} - ${host}`);
+  } catch (error) {
+    console.error('エラー:', error.message);
+    process.exit(1);
+  }
+}
