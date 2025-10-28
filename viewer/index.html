@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>manaba ステータス</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+    .info {
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>manaba ステータス</h1>
+  <div class="info">
+    <p><strong>最終アクセス日時:</strong> <span id="lastAccess">読み込み中...</span></p>
+    <p><strong>ホスト:</strong> <span id="host">読み込み中...</span></p>
+  </div>
+
+  <script>
+    fetch('../status.json')
+      .then(response => response.json())
+      .then(data => {
+        const lastAccessDate = new Date(data.lastEvent.ts);
+        document.getElementById('lastAccess').textContent = lastAccessDate.toLocaleString('ja-JP');
+        document.getElementById('host').textContent = data.lastEvent.host;
+      })
+      .catch(error => {
+        document.getElementById('lastAccess').textContent = 'エラー';
+        document.getElementById('host').textContent = 'エラー';
+        console.error('データの読み込みに失敗しました:', error);
+      });
+  </script>
+</body>
+</html>
