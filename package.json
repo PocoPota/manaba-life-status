@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "logger": "node scripts/logger.js"
