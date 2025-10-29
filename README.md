@@ -60,32 +60,27 @@ manabaの稼働状況を記録・可視化するプロジェクト
 
 ## 使い方
 
-### GitHub Actions経由で実行
+### GitHub Actions経由で直接実行
 
-#### 1. Personal Access Tokenの作成
+#### 1. API経由でトリガー（workflow_dispatch）
 
-1. GitHub Settings → Developer settings → Personal access tokens → Tokens (classic)
-2. "Generate new token (classic)" をクリック
-3. `repo` スコープを選択
-4. トークンをコピー
-
-#### 2. API経由でトリガー
+Chrome拡張機能などから呼び出す場合は、workflow_dispatchエンドポイントを使用します：
 
 ```bash
 curl -X POST \
-  -H "Accept: application/vnd.github.v3+json" \
-  -H "Authorization: token YOUR_PERSONAL_ACCESS_TOKEN" \
-  https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/dispatches \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer YOUR_PERSONAL_ACCESS_TOKEN" \
+  https://api.github.com/repos/YOUR_USERNAME/YOUR_REPO/actions/workflows/update-status.yml/dispatches \
   -d '{
-    "event_type": "update-status",
-    "client_payload": {
+    "ref": "main",
+    "inputs": {
       "timestamp": "1761651197060",
       "host": "manaba.tsukuba.ac.jp"
     }
   }'
 ```
 
-#### 3. GitHub UI経由で手動実行（テスト用）
+#### 2. GitHub UI経由で手動実行（テスト用）
 
 1. リポジトリの "Actions" タブを開く
 2. "Update Status" ワークフローを選択
