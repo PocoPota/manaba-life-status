@@ -7,19 +7,7 @@
   <meta http-equiv="Pragma" content="no-cache">
   <meta http-equiv="Expires" content="0">
   <title>manaba ステータス</title>
-  <style>
-    body {
-      font-family: sans-serif;
-      max-width: 600px;
-      margin: 50px auto;
-      padding: 20px;
-    }
-    .info {
-      border: 1px solid #ccc;
-      padding: 15px;
-      border-radius: 5px;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>manaba ステータス</h1>
@@ -28,24 +16,36 @@
     <p><strong>ホスト:</strong> <span id="host">読み込み中...</span></p>
   </div>
 
-  <script>
-    fetch('../status.json', {
-      cache: 'no-store',
-      headers: {
-        'Cache-Control': 'no-cache'
-      }
-    })
-      .then(response => response.json())
-      .then(data => {
-        const lastAccessDate = new Date(data.lastEvent.ts);
-        document.getElementById('lastAccess').textContent = lastAccessDate.toLocaleString('ja-JP');
-        document.getElementById('host').textContent = data.lastEvent.host;
-      })
-      .catch(error => {
-        document.getElementById('lastAccess').textContent = 'エラー';
-        document.getElementById('host').textContent = 'エラー';
-        console.error('データの読み込みに失敗しました:', error);
-      });
-  </script>
+  <div class="uptime-section">
+    <h2>過去365日間のUptime</h2>
+    <div class="uptime-stats">
+      <strong>Uptime:</strong> <span id="uptimePercent">計算中...</span>
+    </div>
+    <div class="uptime-container">
+      <div class="uptime-labels">
+        <div class="uptime-label">月</div>
+        <div class="uptime-label"></div>
+        <div class="uptime-label">水</div>
+        <div class="uptime-label"></div>
+        <div class="uptime-label">金</div>
+        <div class="uptime-label"></div>
+        <div class="uptime-label"></div>
+      </div>
+      <div class="uptime-bar" id="uptimeBar">
+        読み込み中...
+      </div>
+    </div>
+    <div class="uptime-legend">
+      <span>少ない</span>
+      <div class="legend-box" style="background-color: #ebedf0;"></div>
+      <div class="legend-box" style="background-color: #9be9a8;"></div>
+      <div class="legend-box" style="background-color: #40c463;"></div>
+      <div class="legend-box" style="background-color: #30a14e;"></div>
+      <div class="legend-box" style="background-color: #216e39;"></div>
+      <span>多い</span>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
 </body>
 </html>
